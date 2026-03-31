@@ -53,17 +53,16 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-west-1
+          aws-region: eu-north-1
 
-      - name: Deploy to S3
+      - name: Deploy assets to S3
         run: |
           aws s3 sync dist/ s3://${{ secrets.AWS_BUCKET_NAME }} \
             --delete \
-            --cache-control max-age=31536000
+            --exclude "index.html"
 
-      - name: Invalidate index.html cache
+      - name: Deploy index.html to S3
         run: |
-          aws s3 cp s3://${{ secrets.AWS_BUCKET_NAME }}/index.html \
-            s3://${{ secrets.AWS_BUCKET_NAME }}/index.html \
-            --cache-control no-cache \
-            --metadata-directive REPLACE
+          aws s3 cp dist/index.html s3://${{ secrets.AWS_BUCKET_NAME }}/index.html \
+            --content-type "text/html" \
+            --cache-control "no-cache"
