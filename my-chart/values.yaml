@@ -1,0 +1,12 @@
+# Aquestes són les variables que "ompliran" els teus fitxers de Kubernetes
+replicaCount: 3
+
+image:
+  repository: sulejk/my-cicd-app
+  tag: "latest"
+  pullPolicy: Always
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
