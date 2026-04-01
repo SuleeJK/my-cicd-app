@@ -1,0 +1,22 @@
+# Un Service exposa els teus pods a la xarxa
+# Sense Service, els pods són inaccessibles des de fora
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-cicd-app
+  namespace: default
+spec:
+  # NodePort exposa el servei a un port fix de la màquina host
+  # Alternatives: ClusterIP (només intern) o LoadBalancer (cloud)
+  type: NodePort
+  selector:
+    # Ha de coincidir amb l'etiqueta del Deployment
+    app: my-cicd-app
+  ports:
+    - protocol: TCP
+      # Port intern del Service dins del cluster
+      port: 80
+      # Port del contenidor on arriba el tràfic
+      targetPort: 80
+      # Port extern accessible des de fora del cluster (rang 30000-32767)
+      nodePort: 30080

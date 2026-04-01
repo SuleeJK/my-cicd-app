@@ -1,0 +1,37 @@
+# Un Deployment és l'objecte de Kubernetes que gestiona
+# quantes còpies (replicas) de la teva app corren i com s'actualitzen
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Nom identificatiu del Deployment dins del cluster
+  name: my-cicd-app
+  # Namespace és com una carpeta lògica dins del cluster
+  namespace: default
+spec:
+  # Quantes còpies del contenidor volem que corrin simultàniament
+  replicas: 2
+  selector:
+    matchLabels:
+      # Etiqueta per identificar els pods que pertanyen a aquest Deployment
+      app: my-cicd-app
+  template:
+    metadata:
+      labels:
+        app: my-cicd-app
+    spec:
+      containers:
+        - name: my-cicd-app
+          # La imatge que has pujat a Docker Hub
+          image: sulejk/my-cicd-app:latest
+          ports:
+            # Port on escolta Nginx dins del contenidor
+            - containerPort: 80
+          resources:
+            requests:
+              # Recursos mínims garantits per al contenidor
+              memory: "64Mi"
+              cpu: "100m"
+            limits:
+              # Recursos màxims que pot consumir
+              memory: "128Mi"
+              cpu: "200m"
