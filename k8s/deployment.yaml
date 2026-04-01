@@ -9,7 +9,7 @@ metadata:
   namespace: default
 spec:
   # Quantes còpies del contenidor volem que corrin simultàniament
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       # Etiqueta per identificar els pods que pertanyen a aquest Deployment
