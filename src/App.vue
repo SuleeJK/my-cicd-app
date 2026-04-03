@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-    <!-- Barra de navegació superior -->
     <nav class="navbar">
       <div class="navbar-brand">
         <span class="logo">⚽</span>
@@ -14,7 +13,6 @@
       </div>
     </nav>
 
-    <!-- Contingut de cada pàgina -->
     <main class="content">
       <RouterView />
     </main>
@@ -26,7 +24,6 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <style>
-/* Reset i variables globals */
 * {
   margin: 0;
   padding: 0;
@@ -45,6 +42,12 @@ import { RouterLink, RouterView } from 'vue-router'
   --text-muted: #94a3b8;
 }
 
+html, body {
+  /* Ocupa tota l'alçada de la pantalla */
+  height: 100%;
+  width: 100%;
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -54,19 +57,22 @@ body {
 
 .app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Navbar */
+/* Navbar ocupa tot l'ample */
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 1rem 3rem;
   background: var(--bg-card);
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
   z-index: 100;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -75,9 +81,7 @@ body {
   gap: 0.5rem;
 }
 
-.logo {
-  font-size: 1.5rem;
-}
+.logo { font-size: 1.5rem; }
 
 .title {
   font-size: 1.2rem;
@@ -87,7 +91,7 @@ body {
 
 .navbar-links {
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .navbar-links a {
@@ -102,14 +106,15 @@ body {
   color: var(--accent);
 }
 
-/* Contingut principal */
+/* Contingut principal — ocupa tot l'ample disponible */
 .content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  flex: 1;
+  width: 100%;
+  /* Marges laterals petits per aprofitar l'espai */
+  padding: 2rem 3rem;
 }
 
-/* Cards reutilitzables */
+/* Cards */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -151,15 +156,9 @@ td {
   border-bottom: 1px solid var(--border);
 }
 
-tr:last-child td {
-  border-bottom: none;
-}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: rgba(255,255,255,0.03); }
 
-tr:hover td {
-  background: rgba(255,255,255,0.03);
-}
-
-/* Loading i errors */
 .loading {
   text-align: center;
   color: var(--text-muted);
@@ -174,7 +173,6 @@ tr:hover td {
   font-size: 0.95rem;
 }
 
-/* Badge de posicions */
 .pos {
   font-weight: 700;
   color: var(--text-muted);
@@ -183,7 +181,11 @@ tr:hover td {
   text-align: center;
 }
 
-.pos.top3 {
-  color: var(--yellow);
+.pos.top3 { color: var(--yellow); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar { padding: 1rem; }
+  .content { padding: 1rem; }
 }
 </style>
