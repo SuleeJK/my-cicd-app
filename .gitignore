@@ -1,42 +1,85 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Dependencies
+node_modules/
 
-node_modules
-.DS_Store
-dist
-dist-ssr
-coverage
-*.local
+# Build output
+dist/
 
-# Editor directories and files
+# Environment variables — MAI pujar al repositori
+.env
+.env.local
+.env.*.local
+
+# Editor
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
+
+# OS
+.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-*.tsbuildinfo
+# Logs
+*.log
+npm-debug.log*
 
-.eslintcache
 
-# Cypress
-/cypress/videos/
-/cypress/screenshots/
 
-# Vitest
-__screenshots__/
 
-# Vite
-*.timestamp-*-*.mjs
 
-test-results/
-playwright-report/
+
+
+
+
+
+
+
+
+
+
+
+# # Logs
+# logs
+# *.log
+# npm-debug.log*
+# yarn-debug.log*
+# yarn-error.log*
+# pnpm-debug.log*
+# lerna-debug.log*
+
+# node_modules
+# .DS_Store
+# dist
+# dist-ssr
+# coverage
+# *.local
+
+# # Editor directories and files
+# .vscode/*
+# !.vscode/extensions.json
+# .idea
+# *.suo
+# *.ntvs*
+# *.njsproj
+# *.sln
+# *.sw?
+
+# *.tsbuildinfo
+
+# .eslintcache
+
+# # Cypress
+# /cypress/videos/
+# /cypress/screenshots/
+
+# # Vitest
+# __screenshots__/
+
+# # Vite
+# *.timestamp-*-*.mjs
+
+# test-results/
+# playwright-report/
