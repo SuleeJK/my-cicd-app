@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+# Afegim aquest bloc per garantir que el workflow té permisos d'escriptura
+permissions:
+  contents: write
+
 jobs:
   test:
     name: Run Tests
@@ -36,8 +40,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          # Necessitem permisos d'escriptura per actualitzar el values.yaml
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Això permet que el push torni al mateix repo
+          persist-credentials: true
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -48,7 +52,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # Generem un tag únic basat en el commit per evitar l'ús de "latest"
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
@@ -57,7 +60,6 @@ jobs:
           tags: |
             sulejk/my-cicd-app:latest
             sulejk/my-cicd-app:${{ github.sha }}
-          # Injectem la API Key com a argument de build perquè Vite la pugui llegir
           build-args: |
             VITE_FOOTBALL_API_KEY=${{ secrets.VITE_FOOTBALL_API_KEY }}
 
@@ -68,7 +70,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-north-1
 
-      - name: Build and Deploy to S3 (Production Cloud)
+      - name: Build and Deploy to S3
         env:
           VITE_FOOTBALL_API_KEY: ${{ secrets.VITE_FOOTBALL_API_KEY }}
         run: |
@@ -76,13 +78,18 @@ jobs:
           npm run build
           aws s3 sync dist/ s3://${{ secrets.AWS_BUCKET_NAME }} --delete
 
-      # PAS CLAU GITOPS: Actualitzem el tag del Helm Chart al repositori
-      # Això farà que ArgoCD detecti el canvi i actualitzi el cluster local
+      # PAS GITOPS: Actualització del tag al values.yaml
       - name: Update Helm Chart Tag
         run: |
+          # Modifiquem el tag amb el SHA del commit actual
           sed -i 's/tag: .*/tag: "${{ github.sha }}"/' my-chart/values.yaml
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
+          
+          # Configurem Git per fer el commit
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
           git add my-chart/values.yaml
           git commit -m "chore: update image tag to ${{ github.sha }} [skip ci]"
+          
+          # El push ara tindrà permís gràcies a la config del pas anterior
           git push
