@@ -3,7 +3,7 @@ replicaCount: 3
 
 image:
   repository: sulejk/my-cicd-app
-  tag: "27057cd9eed0221fef4b7b10d5f81e32dc285899"
+  tag: "087414d1b113116cc94991603517b590c2c58522"
   pullPolicy: Always
 
 service:
